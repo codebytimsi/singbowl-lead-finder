@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
     res.json({
-        message: "SingBowl Lead Finder backend is running!"
+        message: "OM Enterprise Buyer Lead Finder backend is running!"
     });
 });
 
