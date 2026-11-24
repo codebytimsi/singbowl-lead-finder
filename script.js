@@ -582,20 +582,25 @@ function loadSelectedLead() {
 
 
             emailSubject.value =
-                `Wholesale Singing Bowl Partnership with ${selectedLead.name}`;
+                "Wholesale Inquiry – Handcrafted Home Décor & Giftware";
 
 
             emailMessage.value =
-`Hello ${selectedLead.name} team,
+`Hello,
 
-I’m reaching out regarding a potential business opportunity for singing bowls.
+I hope you’re doing well.
 
-I came across your website and noticed your interest in singing bowls and related products. We would love to explore whether our products could be a good fit for your store and customers.
+I’m reaching out on behalf of OM Enterprise, where we specialize in handcrafted home décor and gifting products, including decorative lanterns, candle holders, and decorative jars.
 
-If you're interested, I’d be happy to share more information about our products, pricing, and wholesale options.
+We would love to explore the possibility of working with your business and would be happy to share our product collection for your review.
+
+Would you be interested in exploring potential wholesale opportunities with us?
+
+Looking forward to hearing from you.
 
 Best regards,
-Timsi`;
+Shreekant Pathak
+OM Enterprise`;
 
 
             composer.scrollIntoView({
