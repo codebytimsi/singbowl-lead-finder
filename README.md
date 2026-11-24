@@ -1,8 +1,8 @@
-# SingBowl Lead Finder
+# OM Enterprise Buyer Lead Finder
 
-A real-time buyer lead finder built for the SingBowl internship assignment.
+A real-time buyer lead finder built for OM Enterprise's wholesale outreach workflow.
 
-The application searches the US market for potential singing bowl buyers using Google Search through SerpAPI, filters irrelevant results, validates business websites, and detects publicly available business emails for outreach preparation.
+The application searches the US market for potential buyers of handcrafted home décor and gifting products using Google Search through SerpAPI. It filters irrelevant results, validates business websites, detects publicly available business emails, and helps prepare wholesale outreach emails.
 
 ## Features
 
@@ -14,25 +14,43 @@ The application searches the US market for potential singing bowl buyers using G
 - Displays clean business domains
 - Detects publicly available business emails
 - Lead selection workflow
-- Email preparation interface
+- Buyer details view
+- Wholesale email preparation interface
 - `mailto` email workflow
 - Dashboard with buyer, website, and email statistics
 - Responsive dashboard UI
 
+## Product Categories
+
+The lead finder can be used to search for potential buyers related to:
+
+- Home décor
+- Handcrafted décor
+- Giftware
+- Decorative lanterns
+- Candle holders
+- Decorative jars
+- Votive holders
+- Gifting products
+- Handcrafted lifestyle products
+
 ## Tech Stack
 
 ### Frontend
+
 - HTML
 - CSS
 - JavaScript
 
 ### Backend
+
 - Node.js
 - Express.js
 - CORS
 - dotenv
 
 ### API
+
 - SerpAPI
 
 ## How It Works
@@ -40,15 +58,26 @@ The application searches the US market for potential singing bowl buyers using G
 1. User enters a buyer-related keyword.
 2. The frontend sends the search request to the Node.js backend.
 3. The backend queries Google through SerpAPI with US targeting.
-4. Irrelevant and marketplace results are filtered.
+4. Irrelevant marketplace and invalid results are filtered.
 5. Valid business websites are retained.
 6. Public business emails are detected from available website pages.
 7. Results are displayed as buyer lead cards.
-8. A lead can be selected and prepared for email outreach.
+8. A lead can be selected for outreach.
+9. The buyer's public email is added to the email composer when available.
+10. The OM Enterprise wholesale outreach template is prepared.
+11. The prepared email can be opened in the user's default email application.
+
+## Email Outreach
+
+**Subject:**
+
+Wholesale Inquiry – Handcrafted Home Décor & Giftware
+
+The email introduces OM Enterprise and its handcrafted home décor and gifting products, including decorative lanterns, candle holders, and decorative jars.
 
 ## Project Structure
 
-singing-bowl-lead-finder/
+singbowl-lead-finder/
 │
 ├── index.html
 ├── style.css
@@ -58,3 +87,43 @@ singing-bowl-lead-finder/
 ├── package-lock.json
 ├── .gitignore
 └── README.md
+
+## Setup
+
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Create `.env`
+
+Create a `.env` file in the project root:
+
+```env
+SERPAPI_KEY=your_serpapi_api_key
+```
+
+### 3. Start the backend
+
+```bash
+node server.js
+```
+
+The backend will run on:
+
+```text
+http://localhost:3000
+```
+
+### 4. Open the frontend
+
+Open `index.html` in the browser.
+
+## Important
+
+The application only uses publicly available business contact emails detected from business websites.
+
+Before sending an outreach email, verify that the business is a relevant potential wholesale buyer.
+
+The OM Enterprise product poster should be attached manually to the email before sending.
