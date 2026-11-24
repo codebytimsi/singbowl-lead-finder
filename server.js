@@ -16,9 +16,11 @@ app.use(express.json());
 // ===============================
 
 app.get("/", (req, res) => {
+
     res.json({
         message: "OM Enterprise Buyer Lead Finder backend is running!"
     });
+
 });
 
 
@@ -27,6 +29,7 @@ app.get("/", (req, res) => {
 // ===============================
 
 function extractEmails(html) {
+
     if (!html) {
         return [];
     }
@@ -42,7 +45,9 @@ function extractEmails(html) {
     const emails = [...new Set(matches)];
 
     return emails.filter(function (email) {
-        const lowerEmail = email.toLowerCase();
+
+        const lowerEmail =
+            email.toLowerCase();
 
         return (
             !lowerEmail.includes("example.com") &&
@@ -52,7 +57,9 @@ function extractEmails(html) {
             !lowerEmail.includes(".jpeg") &&
             !lowerEmail.includes("wixpress")
         );
+
     });
+
 }
 
 
@@ -61,27 +68,39 @@ function extractEmails(html) {
 // ===============================
 
 async function getWebsiteHTML(url) {
+
     if (!url) {
         return "";
     }
 
     try {
-        const response = await fetch(url, {
-            headers: {
-                "User-Agent":
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/157 Safari/537.36"
-            }
-        });
+
+        const response =
+            await fetch(url, {
+
+                headers: {
+
+                    "User-Agent":
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/157 Safari/537.36"
+
+                }
+
+            });
+
 
         if (!response.ok) {
             return "";
         }
 
+
         return await response.text();
 
     } catch (error) {
+
         return "";
+
     }
+
 }
 
 
@@ -90,45 +109,94 @@ async function getWebsiteHTML(url) {
 // ===============================
 
 async function findPublicEmail(website) {
+
     if (!website) {
         return null;
     }
 
     let baseURL;
 
+
     try {
-        baseURL = new URL(website);
+
+        baseURL =
+            new URL(website);
+
     } catch (error) {
+
         return null;
+
     }
 
+
     const pagesToCheck = [
+
         baseURL.href,
-        new URL("/contact", baseURL.origin).href,
-        new URL("/contact-us", baseURL.origin).href,
-        new URL("/pages/contact", baseURL.origin).href,
-        new URL("/pages/contact-us", baseURL.origin).href,
-        new URL("/about", baseURL.origin).href,
-        new URL("/about-us", baseURL.origin).href
+
+        new URL(
+            "/contact",
+            baseURL.origin
+        ).href,
+
+        new URL(
+            "/contact-us",
+            baseURL.origin
+        ).href,
+
+        new URL(
+            "/pages/contact",
+            baseURL.origin
+        ).href,
+
+        new URL(
+            "/pages/contact-us",
+            baseURL.origin
+        ).href,
+
+        new URL(
+            "/about",
+            baseURL.origin
+        ).href,
+
+        new URL(
+            "/about-us",
+            baseURL.origin
+        ).href
+
     ];
+
 
     for (const pageURL of pagesToCheck) {
 
         try {
-            const html = await getWebsiteHTML(pageURL);
 
-            const emails = extractEmails(html);
+            const html =
+                await getWebsiteHTML(
+                    pageURL
+                );
+
+
+            const emails =
+                extractEmails(html);
+
 
             if (emails.length > 0) {
+
                 return emails[0];
+
             }
 
         } catch (error) {
+
             continue;
+
         }
+
     }
 
+
     return null;
+
 }
 
 
@@ -141,37 +209,54 @@ function hasValidWebsite(result) {
     const rawLink =
         result.link || "";
 
+
     if (!rawLink) {
         return false;
     }
 
+
     let parsedURL;
 
+
     try {
-        parsedURL = new URL(rawLink);
+
+        parsedURL =
+            new URL(rawLink);
 
     } catch (error) {
+
         return false;
+
     }
 
+
     // Only normal HTTP/HTTPS websites
+
     if (
         parsedURL.protocol !== "http:" &&
         parsedURL.protocol !== "https:"
     ) {
+
         return false;
+
     }
+
 
     const hostname =
         parsedURL.hostname.toLowerCase();
 
+
     // Reject Google/internal links
+
     const blockedHostnames = [
+
         "google.com",
         "google.co",
         "googleusercontent.com",
         "gstatic.com"
+
     ];
+
 
     const isBlockedHost =
         blockedHostnames.some(function (domain) {
@@ -183,11 +268,14 @@ function hasValidWebsite(result) {
 
         });
 
+
     if (isBlockedHost) {
         return false;
     }
 
+
     return true;
+
 }
 
 
@@ -201,16 +289,21 @@ function isUsefulBusinessResult(result) {
         return false;
     }
 
+
     // First make sure there is a real website
+
     if (!hasValidWebsite(result)) {
         return false;
     }
 
+
     const title =
         (result.title || "").toLowerCase();
 
+
     const link =
         (result.link || "").toLowerCase();
+
 
     const snippet =
         (result.snippet || "").toLowerCase();
@@ -221,6 +314,7 @@ function isUsefulBusinessResult(result) {
     // ===============================
 
     const blockedDomains = [
+
         "amazon.com",
         "amazon.in",
         "ebay.com",
@@ -234,12 +328,17 @@ function isUsefulBusinessResult(result) {
         "youtube.com",
         "instagram.com",
         "tiktok.com"
+
     ];
+
 
     const isBlocked =
         blockedDomains.some(function (domain) {
+
             return link.includes(domain);
+
         });
+
 
     if (isBlocked) {
         return false;
@@ -251,13 +350,16 @@ function isUsefulBusinessResult(result) {
     // ===============================
 
     const productWords = [
+
         "buy now",
         "add to cart",
         "product details",
         "in stock",
         "sku",
         "sale price"
+
     ];
+
 
     const productScore =
         productWords.filter(function (word) {
@@ -269,6 +371,7 @@ function isUsefulBusinessResult(result) {
 
         }).length;
 
+
     if (productScore >= 2) {
         return false;
     }
@@ -279,11 +382,14 @@ function isUsefulBusinessResult(result) {
     // ===============================
 
     const garbagePatterns = [
+
         "caes",
         "google",
         "gstatic",
         "googleusercontent"
+
     ];
+
 
     const looksLikeGarbage =
         garbagePatterns.some(function (pattern) {
@@ -295,12 +401,14 @@ function isUsefulBusinessResult(result) {
 
         });
 
+
     if (looksLikeGarbage) {
         return false;
     }
 
 
     return true;
+
 }
 
 
@@ -313,12 +421,18 @@ app.get("/api/search", async (req, res) => {
     const keyword =
         req.query.q;
 
+
     if (!keyword) {
+
         return res.status(400).json({
+
             error:
                 "Search keyword is required."
+
         });
+
     }
+
 
     try {
 
@@ -340,9 +454,11 @@ app.get("/api/search", async (req, res) => {
 
 
         if (!response.ok) {
+
             throw new Error(
                 "SerpAPI request failed."
             );
+
         }
 
 
@@ -355,6 +471,7 @@ app.get("/api/search", async (req, res) => {
 
 
         // Filter bad / irrelevant results
+
         const businessResults =
             rawResults.filter(
                 isUsefulBusinessResult
@@ -362,6 +479,7 @@ app.get("/api/search", async (req, res) => {
 
 
         // Find public emails
+
         const enrichedResults =
             await Promise.all(
 
@@ -375,9 +493,12 @@ app.get("/api/search", async (req, res) => {
 
 
                         return {
+
                             ...result,
+
                             public_email:
                                 email
+
                         };
 
                     }
@@ -402,6 +523,7 @@ app.get("/api/search", async (req, res) => {
     } catch (error) {
 
         console.error(error);
+
 
         res.status(500).json({
 

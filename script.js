@@ -14,15 +14,21 @@ const emailCount = document.getElementById("emailCount");
 // ===============================
 
 function getCleanWebsite(url) {
-    if (!url) return "";
+
+    if (!url) {
+        return "";
+    }
 
     try {
+
         const parsedUrl = new URL(url);
 
         return parsedUrl.hostname.replace(/^www\./, "");
 
     } catch (error) {
+
         return "";
+
     }
 }
 
@@ -36,22 +42,30 @@ searchBtn.addEventListener("click", async function () {
     const keyword =
         keywordInput.value.trim();
 
+
     if (!keyword) {
+
         alert("Please enter a search keyword.");
+
         return;
     }
 
+
     searchBtn.disabled = true;
-    searchBtn.textContent = "Searching...";
+
+    searchBtn.innerHTML = "Searching...";
+
 
     resultStatus.textContent =
         "Finding real-time buyers...";
+
 
     resultsContainer.innerHTML = `
         <p style="padding: 20px;">
             Searching the US market...
         </p>
     `;
+
 
     try {
 
@@ -62,9 +76,11 @@ searchBtn.addEventListener("click", async function () {
 
 
         if (!response.ok) {
+
             throw new Error(
                 "Failed to fetch buyers."
             );
+
         }
 
 
@@ -86,13 +102,17 @@ searchBtn.addEventListener("click", async function () {
 
         websiteCount.textContent =
             results.filter(function (result) {
+
                 return result.link;
+
             }).length;
 
 
         emailCount.textContent =
             results.filter(function (result) {
+
                 return result.public_email;
+
             }).length;
 
 
@@ -106,10 +126,12 @@ searchBtn.addEventListener("click", async function () {
         if (results.length === 0) {
 
             resultsContainer.innerHTML = `
+
                 <p style="padding: 20px;">
                     No buyers found.
                     Try another search keyword.
                 </p>
+
             `;
 
             return;
@@ -125,6 +147,7 @@ searchBtn.addEventListener("click", async function () {
             const card =
                 document.createElement("div");
 
+
             card.className =
                 "lead-card";
 
@@ -135,11 +158,13 @@ searchBtn.addEventListener("click", async function () {
 
 
             // Keep original URL for button
+
             const originalWebsite =
                 result.link || "";
 
 
             // Clean domain only for display
+
             const displayWebsite =
                 getCleanWebsite(
                     originalWebsite
@@ -164,9 +189,12 @@ searchBtn.addEventListener("click", async function () {
                         ${title.charAt(0).toUpperCase()}
                     </div>
 
+
                     <div>
 
-                        <h3>${title}</h3>
+                        <h3>
+                            ${title}
+                        </h3>
 
                         <p>
                             🇺🇸 United States
@@ -242,6 +270,7 @@ searchBtn.addEventListener("click", async function () {
                     </button>
 
                 </div>
+
             `;
 
 
@@ -338,6 +367,7 @@ searchBtn.addEventListener("click", async function () {
             <p style="padding: 20px;">
 
                 Unable to fetch buyers.
+
                 Please make sure the backend
                 server is running.
 
@@ -349,8 +379,8 @@ searchBtn.addEventListener("click", async function () {
 
         searchBtn.disabled = false;
 
-        searchBtn.textContent =
-            "Find Buyers";
+        searchBtn.innerHTML =
+            "Find Buyers <span>→</span>";
 
     }
 
@@ -381,7 +411,9 @@ function loadSelectedLead() {
         !selectedLead ||
         !container
     ) {
+
         return;
+
     }
 
 
@@ -581,6 +613,10 @@ function loadSelectedLead() {
             }
 
 
+            // ===============================
+            // OM ENTERPRISE EMAIL TEMPLATE
+            // ===============================
+
             emailSubject.value =
                 "Wholesale Inquiry – Handcrafted Home Décor & Giftware";
 
@@ -667,9 +703,11 @@ function showSection(section) {
         "active"
     );
 
+
     findBuyersSection.classList.remove(
         "active"
     );
+
 
     emailLeadsSection.classList.remove(
         "active"

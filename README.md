@@ -69,6 +69,8 @@ The lead finder can be used to search for potential buyers related to:
 
 ## Email Outreach
 
+The application prepares the following wholesale outreach format:
+
 **Subject:**
 
 Wholesale Inquiry – Handcrafted Home Décor & Giftware
@@ -77,7 +79,7 @@ The email introduces OM Enterprise and its handcrafted home décor and gifting p
 
 ## Project Structure
 
-singbowl-lead-finder/
+om-enterprise-buyer-lead-finder/
 │
 ├── index.html
 ├── style.css
@@ -94,36 +96,3 @@ singbowl-lead-finder/
 
 ```bash
 npm install
-```
-
-### 2. Create `.env`
-
-Create a `.env` file in the project root:
-
-```env
-SERPAPI_KEY=your_serpapi_api_key
-```
-
-### 3. Start the backend
-
-```bash
-node server.js
-```
-
-The backend will run on:
-
-```text
-http://localhost:3000
-```
-
-### 4. Open the frontend
-
-Open `index.html` in the browser.
-
-## Important
-
-The application only uses publicly available business contact emails detected from business websites.
-
-Before sending an outreach email, verify that the business is a relevant potential wholesale buyer.
-
-The OM Enterprise product poster should be attached manually to the email before sending.
